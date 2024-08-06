@@ -1,28 +1,29 @@
-name: Ejecutar Pruebas
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Revisar el código
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Configurar Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
 
-    - name: Instalar dependencias
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Ejecutar pruebas
-      run: npm test
+      - name: Fix permissions for jest
+        run: chmod +x node_modules/.bin/jest
+
+      - name: Run tests
+        run: npm test
